@@ -15,8 +15,12 @@ module Princely
     end
 
     def asset_file_path(asset)
-      # Remove /assets/ from generated names and try and find a matching asset
-      Rails.application.assets.find_asset(asset.gsub(%r{/assets/}, "")).try(:pathname) || asset
+      if Rails.application && Rails.application.assets
+        # Remove /assets/ from generated names and try and find a matching asset
+        Rails.application.assets.find_asset(asset.gsub(%r{/assets/}, "")).try(:pathname) || asset
+      else
+        asset
+      end
     end
   end
 end
